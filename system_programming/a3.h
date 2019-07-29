@@ -1,0 +1,2 @@
+void APrintNum();
+void APrintLetter();

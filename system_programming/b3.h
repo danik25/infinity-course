@@ -1,0 +1,2 @@
+void BPrintNum();
+void BPrintLetter();
