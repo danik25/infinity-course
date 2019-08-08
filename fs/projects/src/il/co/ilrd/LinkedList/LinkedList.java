@@ -1,8 +1,9 @@
-package il.co.ilrd;
+package il.co.ilrd.LinkedList;
+
 
 public class LinkedList{
 	private Node head; 
-
+	
 	public void pushFront(Object data){
 		head = new Node(data, head);
 	}
@@ -15,9 +16,10 @@ public class LinkedList{
 	}
 	public int size()
 	{
-		LinkedListIterator index = new LinkedListIterator(head);
+		LinkedListIterator iter = new LinkedListIterator(head);
 		int cnt = 0;
-		for(; index.hasNext(); index.next())
+		
+		for(; iter.hasNext(); iter.next())
 		{
 			++cnt;
 		}
@@ -28,7 +30,20 @@ public class LinkedList{
 	{
 		return(head == null);
 	}
-	/*public Iterator find(Object data);*/
+	
+	public Iterator find(Object data)
+	{
+		LinkedListIterator iter = new LinkedListIterator(head);
+		for(; iter.hasNext(); iter.next())
+		{
+			if(iter.currentNode.data.equals(data))
+			{
+				return(iter);
+			}
+		}
+		return(null);
+	}
+	
 	public Iterator begin()
 	{
 		LinkedListIterator begin = new LinkedListIterator(head);
@@ -40,8 +55,8 @@ public class LinkedList{
 		private Node nextNode; 
 		private Node(Object data, Node nextNode)
 		{
-			data = data;
-			nextNode = nextNode;
+			this.data = data;
+			this.nextNode = nextNode;
 		}
 }
 
@@ -54,15 +69,16 @@ public class LinkedList{
 		@Override 
 		public boolean hasNext()
 		{
-			return(currentNode.nextNode != null);
+			return(currentNode != null);
 			
 		}
 		@Override
 		public Object next()
 		{
+			Object ans = currentNode.data;
 			currentNode = currentNode.nextNode;
-			return(currentNode.nextNode);
+			
+			return(ans);
 		}
 	}
 }
-
