@@ -25,7 +25,6 @@ enum EWeekDay
     public int getIntVal()
     {
         return(this.ordinal());
-        //return(this.intVal);
     }
     public static EWeekDay fromVal(int index)
     {
