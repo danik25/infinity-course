@@ -114,6 +114,11 @@ public class Complex implements Comparable <Complex> {
     @Override
     public boolean equals(Object toCompare)
     {
+    	if (!(toCompare instanceof Complex))
+    	{
+    		return (false);
+    	}
+    	
     	Complex tmp = (Complex)toCompare;
     	return(this.getReal() == tmp.getReal() && this.getImaginary() == tmp.getImaginary());
     } 
@@ -121,7 +126,7 @@ public class Complex implements Comparable <Complex> {
     @Override
     public int hashCode()
     {
-    	return((int)(getReal() + 2 * getImaginary()));
+    	return((int)(31 * getReal() + 7 * getImaginary() + 5));
     } 
     
     
