@@ -6,15 +6,17 @@ import java.util.TimerTask;
 
 public class VendingMachine {
 	
-	Timer timer; 
-    TimerTask task = new TimeOutTask();
+	Timer timer = null; 
+	
+    TimerTask task;
+    long timestamp = System.currentTimeMillis();
     
     private float money;
     private StateVM state;
     private List <Product> productList;
     private Display display;
 
-    VendingMachine(Display display, List <Product> productList) {
+    VendingMachine(Display display, List <Product> productList) { 
     	this.display = display;
     	this.productList = productList;
     	this.money = 0;
@@ -31,13 +33,24 @@ public class VendingMachine {
     	this.state.abort(this);
     }
     public void start() {
+    	if(null == timer)
+    	{
+    		timer = new Timer();
+    		task = new TimeOutTask();
+    		timer.schedule(task, 0, 1000);
+    	}
     	this.state.start(this);
     }
     public void end() {
+    	if(null != timer)
+    	{
+    		timer.cancel();
+    		timer = null;
+    	}
     	this.state.end(this);
     }
     
-    private VendingMachine getVM()
+    public VendingMachine getVm()
     {
     	return(this);
     }
@@ -45,7 +58,7 @@ public class VendingMachine {
     class TimeOutTask extends TimerTask {
 		@Override
 		public void run() {
-			state.timeOut(getVM());
+			state.timeOut(getVm());
 		}
     }
 
@@ -56,64 +69,36 @@ public class VendingMachine {
         NOT_READY
         {
             @Override
-            void abort(VendingMachine vmObject) {
-            	;
+            void abort(VendingMachine vmObject) {/*do nothing*/}
+            
+            @Override
+            void start(VendingMachine vmObject) {  
+            	updateState(vmObject, IDLE);
             }
             @Override
-            void start(VendingMachine vmObject) {
-            	vmObject.timer = new Timer();
-            	vmObject.timer.schedule(vmObject.task, 0, 1000);
-            	
-            	vmObject.state = IDLE;
+            void insertMoney(VendingMachine vmObject, float amount)
+            {
+            	vmObject.display.PrintToDisplay("cant insert money, turn on the machine");
+            }
+            
+            @Override
+            void end(VendingMachine vmObject) {
+            	vmObject.display.PrintToDisplay("already off");
             }
         },
         /*~~~~~~~~~~~~~~~~~~~~~~IDLE~~~~~~~~~~~~~~~~~~~~~~*/
         IDLE
         {
             @Override
-            void abort(VendingMachine vmObject) {
-            	;
-            }
-            
-            @Override
-            void end(VendingMachine vmObject) {
-            	vmObject.state = NOT_READY;
-            	vmObject.timer.cancel();
-            	vmObject.timer.purge();
-            }
-            
-            @Override
-            void insertMoney(VendingMachine vmObject, float amount) {
-            	vmObject.state = COLLECTING_MONEY;
-            	vmObject.state.insertMoney(vmObject, amount);
-            	
-            }
+            void abort(VendingMachine vmObject) {/*do nothing*/}
         }, 
         /*~~~~~~~~~~~~~~~~~~~~~~COLLECTING_MONEY~~~~~~~~~~~~~~~~~~~~~~*/
         COLLECTING_MONEY
-        {
-        	long timestamp = System.currentTimeMillis();
-        	
+        {        	
             @Override
             void abort(VendingMachine vmObject) {
             	returnMoney(vmObject);
-            	vmObject.state = IDLE;
-            }
-            
-            @Override
-            void end(VendingMachine vmObject) {
-            	returnMoney(vmObject);
-            	vmObject.state = NOT_READY;
-            	vmObject.timer.cancel();
-            	vmObject.timer.purge();
-            }
-            
-            @Override
-            void insertMoney(VendingMachine vmObject, float amount)
-            {
-            	//System.out.println("inserted");
-            	timestamp = System.currentTimeMillis();
-            	vmObject.money += amount;
+            	updateState(vmObject, IDLE);
             }
             
             @Override
@@ -139,20 +124,20 @@ public class VendingMachine {
             		vmObject.display.PrintToDisplay("no such product");
             	}
             	returnMoney(vmObject);
-            	vmObject.state = IDLE;
+            	updateState(vmObject, IDLE);
             }
             
             @Override
             void timeOut(VendingMachine vmObject)
             {
             	long tmpTimestamp = System.currentTimeMillis();
+            	long threshold = 15; 
             	
-            	if(((tmpTimestamp - timestamp) / 1000) > 15)
+            	if(((tmpTimestamp - vmObject.timestamp) / 1000) > threshold)
             	{
-            		System.out.println(tmpTimestamp + "\n" + timestamp);
             		vmObject.display.PrintToDisplay("TIME OUT");
             		returnMoney(vmObject);
-            		vmObject.state = IDLE;
+            		updateState(vmObject, IDLE);
             	}
             }
         };
@@ -165,11 +150,10 @@ public class VendingMachine {
         }
         void insertMoney(VendingMachine vmObject, float amount) {
         	//default
-        	vmObject.display.PrintToDisplay("cant insert money in this state");
+        	updateState(vmObject, COLLECTING_MONEY);
+        	vmObject.money += amount;
         }
-        void timeOut(VendingMachine vmObject) {
-        	;
-        }
+        void timeOut(VendingMachine vmObject) {/*do nothing*/}
         
         void start(VendingMachine vmObject) {
         	//default
@@ -177,25 +161,33 @@ public class VendingMachine {
         }
         void end(VendingMachine vmObject) {
         	//default
-        	vmObject.display.PrintToDisplay("already off");
+        	returnMoney(vmObject);
+        	updateState(vmObject, NOT_READY);
+        	
         }
         
         /*----------------------------------------------------*/
        	/*				  assistance functions				  */
         /*----------------------------------------------------*/
-        void returnMoney(VendingMachine vmObject)
+        private static void returnMoney(VendingMachine vmObject)
         {
         	vmObject.display.PrintToDisplay(vmObject.money + " returned");
         	vmObject.money = 0;
         }
         
-        Product findProdByName(String name, VendingMachine vmObject) {
+        private static Product findProdByName(String name, VendingMachine vmObject) {
             for(Product prodObj : vmObject.productList) {
                 if(prodObj.getProductName().equals(name)) {
                     return prodObj;
                 }
             }
             return null;
+        }
+        
+        private static void updateState(VendingMachine vmObject, StateVM state)
+        {
+        	vmObject.state = state;
+        	vmObject.timestamp = System.currentTimeMillis();
         }
         /*------------------------------------------------------------*/
     }

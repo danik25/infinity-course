@@ -11,15 +11,16 @@ public class VendingMachineTest {
 		
 		VendingMachine machine = new VendingMachine( obj, productList);
 		
-		System.out.println("vending machine:");
+		System.out.println("~ vending machine: ~");
 		for(Product prod : productList)
 		{
-			System.out.println(prod.getProductName() + ": " + prod.getProductPrice());
+			System.out.println("  " + prod.getProductName() + ": " + prod.getProductPrice());
 		}
 		
-		System.out.println("choos one:\nstart\n"
+		System.out.println("\nchoos one:\nstart\n"
 				+ "abort\n"
 				+ "end\n"
+				+ "finish - finish the progtam\n"
 				+ "choose product - type product name\n"
 				+ "insert money - type a number");
 		
@@ -28,16 +29,15 @@ public class VendingMachineTest {
 		boolean flag = true;
 		float amount = 0;
 		String prodName;
-		Scanner scanner = new Scanner(System.in);
+		Scanner scanner;
 		
 		while(flag == true)
 		{
 			
-			//scanner = new Scanner(System.in);
+			scanner = new Scanner(System.in);
 			
 			if(scanner.hasNextFloat())
 			{
-				System.out.println("money");
 				amount = scanner.nextFloat();
 				machine.insertMoney(amount);
 			}
@@ -46,7 +46,7 @@ public class VendingMachineTest {
 				prodName = scanner.nextLine();
 				switch(prodName)
 				{
-					case "start":
+					case "start": 
 					{
 						machine.start();
 						break;
@@ -61,6 +61,11 @@ public class VendingMachineTest {
 						machine.abort();
 						break;
 					}
+					case "finish":
+					{
+						flag = false;
+						break;
+					}
 					default:
 					{
 						machine.chooseProduct(prodName);
@@ -68,25 +73,7 @@ public class VendingMachineTest {
 					}	
 				}
 			}
-		}
-
-		/*for(int i = 0; i < 5; ++i)
-		{
-			Scanner scanner = new Scanner(System.in);
-			if(scanner.hasNextFloat())
-			{
-				amount = scanner.nextFloat();
-				machine.insertMoney(amount);
-			}
-			else if(scanner.hasNextLine())
-			{
-				prodName = scanner.nextLine();
-				machine.chooseProduct(prodName);
-			}		
-			
-		}*/
-
-        
+		}       
 	}
 
 }
