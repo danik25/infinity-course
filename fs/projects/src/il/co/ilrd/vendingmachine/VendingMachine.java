@@ -11,16 +11,14 @@ public class VendingMachine {
     TimerTask task;
     long timestamp = System.currentTimeMillis();
     
-    private float money;
-    private StateVM state;
+    private float money = 0;
+    private StateVM state = StateVM.NOT_READY;
     private List <Product> productList;
     private Display display;
 
     VendingMachine(Display display, List <Product> productList) { 
     	this.display = display;
     	this.productList = productList;
-    	this.money = 0;
-    	this.state = StateVM.NOT_READY;
     }
 
     public void insertMoney(float amount) {
@@ -66,6 +64,7 @@ public class VendingMachine {
     
     private enum StateVM {
     	/*~~~~~~~~~~~~~~~~~~~~~~NOT_READY~~~~~~~~~~~~~~~~~~~~~~*/
+    	
         NOT_READY
         {
             @Override
@@ -143,6 +142,7 @@ public class VendingMachine {
         };
     	
         /*------------------------------------------------------------*/
+    	
         abstract void abort(VendingMachine vmObject);
         void chooseProduct(VendingMachine vmObject, String productName) {
         	//default
@@ -169,13 +169,13 @@ public class VendingMachine {
         /*----------------------------------------------------*/
        	/*				  assistance functions				  */
         /*----------------------------------------------------*/
-        private static void returnMoney(VendingMachine vmObject)
+        void returnMoney(VendingMachine vmObject)
         {
         	vmObject.display.PrintToDisplay(vmObject.money + " returned");
         	vmObject.money = 0;
         }
         
-        private static Product findProdByName(String name, VendingMachine vmObject) {
+        Product findProdByName(String name, VendingMachine vmObject) {
             for(Product prodObj : vmObject.productList) {
                 if(prodObj.getProductName().equals(name)) {
                     return prodObj;
@@ -184,7 +184,7 @@ public class VendingMachine {
             return null;
         }
         
-        private static void updateState(VendingMachine vmObject, StateVM state)
+        void updateState(VendingMachine vmObject, StateVM state)
         {
         	vmObject.state = state;
         	vmObject.timestamp = System.currentTimeMillis();
