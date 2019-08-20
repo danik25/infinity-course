@@ -3,7 +3,7 @@
 
 #define FUNC_NUM 2
 
-enum PLACE {CTOR, TO_STRING};
+enum PLACE {TO_STRING};
 
 
 typedef void (*(vtable_t)[])();
@@ -34,7 +34,6 @@ char* ToString(object_t * object);
 /*-----------*/
 
 vtable_t Classvtable = {
-    Ctor,
     (vtable_func_t)ToString
 };
 
@@ -49,17 +48,16 @@ object_t* alloc(metadata_t *class)
 {
     object_t *ret = (object_t*)calloc(1, class->size);
     ret->class = class;
-    ((*(class->vtable))[CTOR])();
 
     return(ret);    
 }
-
-/******** vtable ********/
 
 void Ctor()
 {
     printf("ctor!!\n");
 }
+
+/******** vtable ********/
 
 char* ToString(object_t * object)
 {
@@ -70,9 +68,12 @@ char* ToString(object_t * object)
 
 int main()
 {
+    char *(*ptrToString)();
     object_t* obj = alloc(&class_object);
+    Ctor();
+    /*((*(obj->class->vtable))[CTOR])();*/
     /*printf("%s\n", (char *(*)()(*(obj->class->vtable))[TO_STRING])());*/
-    char *(*ptrToString)()  = (char *(*)(object_t *))((*(obj->class->vtable))[TO_STRING]);
+    ptrToString  = (char *(*)(object_t *))((*(obj->class->vtable))[TO_STRING]);
     printf("%s\n", ptrToString(obj));
     return(0);
 }
