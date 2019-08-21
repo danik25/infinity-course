@@ -149,7 +149,7 @@ class LegendaryAnimal extends Cat{
 	}
 }
 
-public class Java2c {
+public class java2c {
 	
 	public static void foo(Animal a){
 		System.out.println(a.toString());
@@ -158,6 +158,7 @@ public class Java2c {
 	public static void main(String[] args){
 		Object obj;
 		Animal animal = new Animal();
+		System.out.println("\n");
 		Dog dog = new Dog();
 		Cat cat = new Cat();
 		LegendaryAnimal la = new LegendaryAnimal();
@@ -169,6 +170,7 @@ public class Java2c {
 		System.out.println(((Animal)cat).ID);
 		System.out.println(((Animal)la).ID);
 		
+		System.out.println("\n\n");
 		Animal[] array = {
 				new Dog(),
 				new Cat(),
@@ -176,7 +178,7 @@ public class Java2c {
 				new LegendaryAnimal(),
 				new Animal()
 		};
-		
+		System.out.println("\n\n");
 		for(Animal a : array){
 			a.sayHello();
 			System.out.println(a.getNumMasters());
