@@ -4,7 +4,7 @@ import java.io.*; // file
 import java.util.*; // list
 
 public class Tree {
-	TreeComponent root;
+	private TreeComponent root;
 	
 	public Tree(String path)
 	{
@@ -16,7 +16,12 @@ public class Tree {
 		root.print(0);
 	}
 	
-	class DirComposite extends TreeComponent
+	private abstract class TreeComponent {
+		String name; 
+		abstract void print(int gap);
+	}
+	
+	private class DirComposite extends TreeComponent
 	{
 		List <TreeComponent> treeList = new ArrayList<TreeComponent>();
 		
@@ -38,7 +43,6 @@ public class Tree {
 	            		file = new FileLeaf(s.getName()); 
 	            	}
 	            	treeList.add(file);
-	            	System.out.println(file.name);
 	            } 
 	            this.name = f.getName();
 	        } 
@@ -62,7 +66,7 @@ public class Tree {
 		}
 	}
 		
-	class FileLeaf extends TreeComponent
+	private class FileLeaf extends TreeComponent
 	{
 			
 		public FileLeaf(String name) 
@@ -81,8 +85,5 @@ public class Tree {
 	}
 }
 
-abstract class TreeComponent {
-	String name; 
-	void print(int gap) {} 
-}
+
 
