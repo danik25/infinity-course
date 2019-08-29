@@ -20,14 +20,13 @@ class PairTest {
 		name.setKey(anotherFirstName);
 		assertEquals(anotherFirstName, name.getKey(), "failed set key");
 	}
-	@SuppressWarnings("unchecked")
 	@Test
 	void minMaxComparatorTest() {
 		String firstName1 = "dani";
 		Integer age1 = 26;
 		String firstName2 = "roni";
 		Integer age2 = 27;
-		String firstName3 = "oren";
+		String firstName3 = "yossi";
 		Integer age3 = 33;
 		
 		Pair <String,Integer> name1 = Pair.of(firstName1, age1);
@@ -44,12 +43,11 @@ class PairTest {
 	
 	@Test
 	void minMaxComparableTest() {	
-		Integer[] intArray = {1, 0, 8, 5, 7, 9, 10, 2, -1, -8, 11};
+		Integer[] intArray = {0, 2, 1, 8, 11, 12};
 		
 		Pair <Integer,Integer> minMax = Pair.minMax(intArray);
-		assertEquals(minMax.getKey(), -8, "failed min with comperator");
-		assertEquals(minMax.getValue(), 11, "failed max with comperator");
-		
+		assertEquals(minMax.getKey(), 0, "failed min with comperator");
+		assertEquals(minMax.getValue(), 12, "failed max with comperator");
 	}
 	
 	@Test

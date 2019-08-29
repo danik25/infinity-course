@@ -5,38 +5,35 @@ import java.util.ConcurrentModificationException;
 
 public class GenericLinkedList<E> implements Iterable<E> 
 {
-    private Node<E> head;
-    private int size;
+    private Node<E> head = new Node<E>(null, null);
     private int listVersion;
 
-    public GenericLinkedList() {
-        head = new Node<E>(null, null);
-    }
-
-    public int size() {      
-        return(size);
+    public int size() {
+    	int cnt = 0;
+    	Node<E> runner = head;
+    	while(runner.nextNode != null)
+        {
+            ++cnt;
+            runner = runner.nextNode;
+        }
+        return(cnt);
     }
 
     public void push(E data) {
         head = new Node<>(data, head);
-        ++size;
         ++listVersion;
     }
 
     public E pop() {
-    	E ans= null;
-    	if(!isEmpty())
-    	{
-    		ans = head.data;
-            head = head.nextNode;
-            --size;
-            ++listVersion;
-    	}        
+		E ans = head.data;
+        head = head.nextNode;
+        ++listVersion;
+    	       
         return(ans);
     }
 
     public boolean isEmpty() {
-        return(0 == size);
+        return(0 == size());
     }
 
     public Iterator<E> find(E data) {

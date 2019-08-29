@@ -32,7 +32,6 @@ class GenericLinkedListJunitTest {
 		{
 			assertEquals(newList.pop(), i - 1 , "failed pop");
 		}
-
 	}
 	
 	@Test

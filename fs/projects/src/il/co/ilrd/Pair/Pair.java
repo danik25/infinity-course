@@ -128,7 +128,15 @@ public class Pair <K, V> implements Map.Entry<K, V>{
 	@Override
 	@SuppressWarnings("unchecked")
 	public boolean equals(Object obj) {
-		return (key == ((Pair<K,V>)obj).key && value == ((Pair<K,V>)obj).value);
+		if(this == obj)
+		{
+			return true;
+		}
+		if (obj instanceof Pair)
+		{
+			return (key == ((Pair<K,V>)obj).key && value == ((Pair<K,V>)obj).value);
+		}
+		return false;
 	}
 }
 
