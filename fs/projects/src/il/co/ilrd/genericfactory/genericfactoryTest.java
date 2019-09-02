@@ -10,7 +10,14 @@ class genericfactoryTest {
 	@Test
 	void test() {
 		Factory<Shape, String, Integer> myFactory = new Factory<>();
-		//myFactory.add("Circle", new );
+		myFactory.add("Circle", new Function<Integer, Circle>(){
+			@Override
+		    public Circle apply(Integer a) {   
+		        return new Circle(); 
+		    }
+		});
+		
+		Circle c = (Circle)myFactory.create("circle", 0);
 		
 	}
 }
@@ -37,6 +44,10 @@ class Circle extends Shape
 	Circle()
 	{
 		System.out.println("im a circle");
+	}
+	void method()
+	{
+		System.out.println("circle");
 	}
 }
 
