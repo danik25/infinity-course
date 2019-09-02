@@ -102,7 +102,8 @@ public class HashMap <K, V> implements Map<K, V>
 	            {
 	            	throw new ConcurrentModificationException();
 	            }
-				if(currentIter != null)
+
+				if(currentIter != null && !currentIter.hasNext())
 				{
 					++listIndex;
 					currentIter = findFirstPair();

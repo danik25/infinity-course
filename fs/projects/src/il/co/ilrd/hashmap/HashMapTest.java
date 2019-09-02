@@ -31,7 +31,7 @@ class HashMapTest {
 	@Test
 	void putAllTest() {
 		System.out.println("put all test:");
-		HashMap<String, Integer> myHash = new HashMap<String, Integer>(10);
+		HashMap<String, Integer> myHash = new HashMap<String, Integer>(1);
 		myHash.put("a", 11);
 		myHash.put("b", 12);
 		myHash.put("c", 13);
@@ -99,7 +99,7 @@ class HashMapTest {
 	}
 	@Test
 	void IteratorTest() {
-		HashMap<String, Integer> myHash = new HashMap<String, Integer>(20);
+		HashMap<String, Integer> myHash = new HashMap<String, Integer>(4);
 		String [] keys = {"a", "b", "c", "d", "e"};
 		int [] vals = {1, 2, 3, 4, 5};
 		
