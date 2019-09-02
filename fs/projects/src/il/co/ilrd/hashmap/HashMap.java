@@ -1,23 +1,25 @@
 package il.co.ilrd.hashmap;
 
 import java.util.AbstractSet;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Collection;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import il.co.ilrd.pair.*;
-import java.util.ArrayList;
-import java.util.LinkedList;
 
-public class HashMap <K, V> implements Map<K, V>
+
+public class HashMap<K, V> implements Map<K, V>
 {
+	private List<List<Entry<K, V>>> table;
+	private int tableSize = 0;
+	private int mapVersion = 0;
 	private int capacity;
-	private int size;
-	private int version;
-	List<List<Entry<K,V>>> table;
-
+	
 	public HashMap()
 	{
 		this(16);
@@ -26,275 +28,311 @@ public class HashMap <K, V> implements Map<K, V>
 	public HashMap(int capacity)
 	{
 		this.capacity = capacity;
-		table = new ArrayList<List<Entry<K,V>>>(capacity);
+		table = new ArrayList<List<Entry<K, V>>>(capacity);
 		
-		for(int i = 0; i < capacity; ++i)
+		for (int i = 0; i < capacity; ++i)
 		{
-			table.add(new LinkedList<Map.Entry<K,V>>());
+			table.add(new LinkedList<Entry<K,V>>());
 		}
+	}
+	
+	@Override
+	public void clear() 
+	{
+		for (List<Entry<K, V>> linkedList: table)
+		{
+			linkedList.clear();
+		}
+		tableSize = 0;
+		++mapVersion;
+	}
+
+	@Override
+	public boolean containsKey(Object key) 
+	{
+		Iterator<K> keyItr = keySet().iterator();
+	
+		while (keyItr.hasNext())
+		{
+			if (key.equals(keyItr.next()))
+			{
+				return true;
+			}
+		}
+	
+		return false;
+	}
+
+	@Override
+	public boolean containsValue(Object value)
+	{
+		Iterator<V> valueItr = values().iterator();
+
+		while (valueItr.hasNext())
+		{
+			if (value.equals(valueItr.next()))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	@Override
+	public V get(Object key) 
+	{
+		Iterator<Entry<K, V>> itr = entrySet().iterator();
+		Entry<K, V> currentPair = null;
+		while (itr.hasNext())
+		{
+			currentPair = itr.next();
+			if (key.equals(currentPair.getKey()))
+			{
+				return currentPair.getValue();
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public boolean isEmpty()
+	{
+		return tableSize == 0;
+	}
+
+	@Override
+	public V put(K key, V value) 
+	{
+		++mapVersion;
+		
+		for (Entry<K, V> currentEntry: this.entrySet())
+		{
+			if (currentEntry.getKey().equals(key))
+			{
+				V oldValue = currentEntry.getValue();
+				currentEntry.setValue(value);
+				return oldValue;
+			}
+		}
+		
+		int tableIndex = key.hashCode() % capacity;
+		table.get(tableIndex).add(Pair.of(key, value));
+		++tableSize;
+		return null;
+	}
+
+	@Override
+	public void putAll(Map<? extends K, ? extends V> m)
+	{
+		Iterator<? extends K> itr = m.keySet().iterator();
+		while (itr.hasNext())
+		{
+			K currentKey = itr.next();
+			this.put(currentKey, m.get(currentKey));
+		}
+	}
+
+	@Override
+	public V remove(Object key) 
+	{
+		++mapVersion;
+		
+		if (!this.containsKey(key))
+		{
+			return null;
+		}
+		
+		V oldValue = this.get(key);
+		
+		--tableSize;
+		table.get(key.hashCode() % capacity).remove(Pair.of(key, oldValue));
+		return oldValue;
+	}
+
+	@Override
+	public int size() 
+	{
+		return tableSize;
+	}
+
+	@Override
+	public Collection<V> values() 
+	{
+		return new ValueSet();
 	}	
+	
+	@Override
+	public Set<Entry<K, V>> entrySet() 
+	{
+		return new EntrySet();
+	}
+	
+	@Override
+	public Set<K> keySet() 
+	{
+		return new KeySet();
+	}
 	
 	private class EntrySet extends AbstractSet<Entry<K, V>>
 	{
 		@Override
-		public Iterator<Entry<K, V>> iterator()
+		public Iterator<Entry<K, V>> iterator() 
 		{
-			return new EntrySetIterator(version);
+			return new EntrySetIterator();
 		}
 
 		@Override
 		public int size()
 		{
-			return size;
+			return tableSize;
 		}
 		
 		private class EntrySetIterator implements Iterator<Entry<K, V>>
 		{
-			private int innerIterVersion;
-			int listIndex;
-			private Iterator <Entry<K, V>>currentIter;
+			Iterator<List<Entry<K, V>>> tableItr;
+			Iterator<Entry<K, V>> pairItr;
+			int itrVersion;
 			
-			EntrySetIterator(int iterVersion)
+			private EntrySetIterator() 
 			{
-				innerIterVersion = iterVersion;
-				currentIter = findFirstPair();
+				itrVersion = mapVersion;
+				tableItr = table.iterator();
+				pairItr = tableItr.next().iterator();
 			}
 			
-		    /*~~~~~~~~~~~~assistance function~~~~~~~~~~~~*/
-			private Iterator<Entry<K, V>> findFirstPair()
-			{	
-				while(listIndex < capacity && table.get(listIndex).size() == 0)
+			@Override
+			public boolean hasNext() 
+			{
+				if (pairItr.hasNext())
 				{
-					++listIndex;
+					return true;
 				}
 				
-				if(listIndex == capacity)
+				List<Entry<K, V>> currentList = null;
+				while(tableItr.hasNext())
 				{
-					return null;
+					currentList = tableItr.next();
+					if (!currentList.isEmpty())
+					{
+						pairItr = currentList.iterator();
+						return true;
+					}
 				}
-				
-				return table.get(listIndex).iterator();
+			
+				return false;
 			}
-			/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+			@Override
+			public Entry<K, V> next() 
+			{
+				if (itrVersion != mapVersion)
+				{
+					throw new ConcurrentModificationException();
+				}
+				
+				return pairItr.next();
+			}
+		}
+	}
+	
+	private class KeySet extends AbstractSet<K>
+	{		
+		@Override
+		public Iterator<K> iterator() 
+		{
+			return new KeySetIterator();
+		}
+
+		@Override
+		public int size() 
+		{
+			return tableSize;
+		}
+		
+		private class KeySetIterator implements Iterator<K>
+		{
+			int keyItrVersion;
+			Iterator<Entry<K, V>> entrySetItr;
+			
+			private KeySetIterator() 
+			{
+				keyItrVersion = mapVersion;
+				entrySetItr = entrySet().iterator();
+			}
 			
 			@Override
 			public boolean hasNext()
-			{	
-				if(currentIter != null)
-				{
-					if(currentIter.hasNext())
-					{
-						return true;
-					}
-					
-					++listIndex;
-					return(findFirstPair() != null);
-				}
-				
-				return false;
-			}
-			
-			@Override
-			public Entry<K, V> next()
 			{
-				Entry<K, V> current = currentIter.next();
-				if(innerIterVersion != version)
-	            {
-	            	throw new ConcurrentModificationException();
-	            }
+				return entrySetItr.hasNext();
+			}
 
-				if(currentIter != null && !currentIter.hasNext())
+			@Override
+			public K next() 
+			{
+				if (keyItrVersion != mapVersion)
 				{
-					++listIndex;
-					currentIter = findFirstPair();
+					throw new ConcurrentModificationException();
 				}
 				
-				return current;
+				Entry<K, V> currentPair = entrySetItr.next();
+				if (currentPair != null)
+				{
+					return currentPair.getKey();
+				}
+				
+				return null;
 			}
 		}
 	}
-	
-	
-	private class KeySet extends AbstractSet<K>
-	{
-		@Override
-		public Iterator<K> iterator()
-		{
-			return new keyIterator();
-		}
-
-		@Override
-		public int size() {
-			return size;
-		}
-		
-		private class keyIterator implements Iterator<K>
-		{
-			EntrySet entryIter = new EntrySet();
-			private Iterator <Entry<K, V>>currentIter = entryIter.iterator();
-			
-			@Override
-			public boolean hasNext() {
-				return currentIter.hasNext();
-			}
-
-			@Override
-			public K next() {
-				return currentIter.next().getKey();
-			}
-		}
-	}
-	
 	
 	private class ValueSet extends AbstractSet<V>
-	{		
+	{
 		@Override
-		public Iterator<V> iterator() {
+		public Iterator<V> iterator() 
+		{
 			return new ValueSetIterator();
 		}
 
 		@Override
-		public int size() {
-			return size;
+		public int size() 
+		{
+			return tableSize;
 		}
 		
 		private class ValueSetIterator implements Iterator<V>
 		{
-			EntrySet entryIter = new EntrySet();
-			private Iterator <Entry<K, V>>currentIter = entryIter.iterator();
+			int valueItrVersion;
+			Iterator<Entry<K, V>> entrySetItr;
+			
+			private ValueSetIterator() 
+			{
+				valueItrVersion = mapVersion;
+				entrySetItr = entrySet().iterator();
+			}
 			
 			@Override
-			public boolean hasNext() {
-				return currentIter.hasNext();
+			public boolean hasNext()
+			{
+				return entrySetItr.hasNext();
 			}
 
 			@Override
-			public V next() {
-				return currentIter.next().getValue();
-			}
-		}
-	}
-	
-	
-	@Override
-	public void clear() {
-        for(int i = 0; i < capacity; ++i) 
-        { 
-        	table.get(i).clear();
-        }
-        ++version;
-        size = 0;
-	}
-
-	@Override
-	public boolean containsKey(Object key) {
-		int index = key.hashCode() % capacity;
-		
-		for(Entry<K,V> a : table.get(index))
-		{
-			if(a.getKey().equals(key))
+			public V next() 
 			{
-				return true; 
-			}
-		}
-		return false;
-	}
-
-	@Override
-	public boolean containsValue(Object value) {
-
-		for(int i = 0; i < capacity; ++i)
-		{
-			for(Entry<K,V> a : table.get(i))
-			{
-				if(a.getValue().equals(value))
+				if (valueItrVersion != mapVersion)
 				{
-					return true;
+					throw new ConcurrentModificationException();
 				}
+				
+				Entry<K, V> currentPair = entrySetItr.next();
+				if (currentPair != null)
+				{
+					return currentPair.getValue();
+				}
+				
+				return null;
 			}
 		}
-		
-		return false;
-	}
-
-	@Override
-	public V get(Object key) {
-		for(Map.Entry<K,V> entry : entrySet())
-		{
-			if(entry.getKey().equals(key))
-			{
-				return entry.getValue();
-			}
-		}
-
-		return null;
-	}
-
-	@Override
-	public boolean isEmpty() {
-		return 0 == size;
-	}
-
-	@Override
-	public V put(K key, V value) {
-		int index = key.hashCode() % capacity;
-		V ans = null;
-		if(containsKey(key))
-		{
-			ans = get(key);
-			remove(key);
-		}
-		table.get(index).add(Pair.of(key, value));
-		++size;
-		++version;
-		
-		return ans;
-	}
-
-	@Override
-	public void putAll(Map<? extends K, ? extends V> m) {
-		for(Map.Entry<? extends K, ? extends V> entry: m.entrySet())
-		{
-			put(entry.getKey(), entry.getValue());
-		}
-	}
-
-	@Override
-	public V remove(Object key) {
-		int index = key.hashCode() % capacity;
-		V ans = null;
-		
-		for(Entry<K,V> a : table.get(index))
-		{
-			if(key.equals(a.getKey()))
-			{
-				table.get(index).remove(a);
-				ans = a.getValue();
-				--size;
-				++version;
-			}
-		}
-		
-		return ans;
-	}
-
-	@Override
-	public int size() {
-		return size;
-	}
-
-	@Override
-	public Collection<V> values() {
-		return new ValueSet();
-	}	
-	
-	@Override
-	public Set<Entry<K, V>> entrySet() {
-		return new EntrySet();
-	}
-	
-	@Override
-	public Set<K> keySet() {
-		return new KeySet();
 	}
 }
