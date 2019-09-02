@@ -1,4 +1,4 @@
-package il.co.ilrd.Pair;
+package il.co.ilrd.pair;
 
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.*; 
