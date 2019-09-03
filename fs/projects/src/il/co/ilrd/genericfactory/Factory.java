@@ -2,21 +2,18 @@ package il.co.ilrd.genericfactory;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;;
+import java.util.function.Function;
 
-class Factory <T, K, A> {
-	Map<K, Function<A, ? extends T>> newMap= new HashMap<>();
+public class Factory <T, K, A> {
+	private Map<K, Function<A, ? extends T>> mapCreators = new HashMap<>();
 
-	void add (K key, Function<A, ? extends T> a)
+	public void add (K key, Function<A, ? extends T> a)
 	{
-		;
+		mapCreators.put(key, a);
 	}
-	T create(K key, A arguments)
+	public T create(K key, A arguments)
 	{
-		return null;
+		return mapCreators.get(key).apply(arguments);
 	}
 }
-
-
-
 
