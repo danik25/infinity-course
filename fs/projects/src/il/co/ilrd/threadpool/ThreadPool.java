@@ -7,8 +7,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-
-
 import java.util.concurrent.Executors;
 
 
@@ -53,7 +51,7 @@ public class ThreadPool implements Executor{
 			{
 				newTask = waitableQueue.dequeue();
 				
-				if(!newTask.futureAns.isCancled)
+				//if(!newTask.futureAns.isCancled)
 				{
 					newTask.run();
 				}
@@ -101,7 +99,7 @@ public class ThreadPool implements Executor{
 /*************************/	
 	
 	public void setNumOfThreads (int newNumofThreads){
-		if(!shutDownFlag || isPaused)
+		if(shutDownFlag || isPaused)
 		{
 			return;
 		}
@@ -179,25 +177,34 @@ public class ThreadPool implements Executor{
 		return ans; 
 	}
 	
-	private class Task<T>  implements Comparable<Task<?>>, Runnable{
+	private static class Task<T>  implements Comparable<Task<?>>, Runnable{
 		private Callable<T> task;
 		private int taskPriority;
+		State state = State.WAITING;
 		private TaskFuture futureAns = new TaskFuture();
-		private Semaphore sem = new Semaphore(0);
 		
-	
 		Task(Callable<T> task, int priority)
 		{
 			this.task = task;
 			taskPriority = priority;
 		}
+		
+		private enum State
+		{
+			RUNNING, WAITING, DONE, CANCELED, PAUSED;
+		}
+		
 		@Override
 		public void run() {
 			try
-			{
+			{			
 				futureAns.result = task.call();
-				futureAns.isDone = true;
-				sem.release();
+				if(state ==  State.CANCELED)
+				{
+					state = State.DONE;
+				}
+
+				futureAns.taskIsDoneSem.release();
 			}catch (Exception e) {
 				System.out.println("failed execution of a task");
 				e.printStackTrace();
@@ -213,43 +220,48 @@ public class ThreadPool implements Executor{
 		private class TaskFuture implements Future<T>{
 			
 			private T result;
-			private boolean isCancled = false; 
-			private boolean isDone = false;
+			private Semaphore taskIsDoneSem = new Semaphore(0);
 			
 			@Override
 			public boolean cancel(boolean mayInterruptIfRunning){
-				isCancled = true;
+				if(state == State.WAITING)
+				{
+					task = () -> {return null;};
+					state = State.CANCELED;
+				}
+				
 				return true;
 			}
 
 			@Override
 			public boolean isCancelled() {
-				return isCancled;
+
+				return (state == State.CANCELED || state == State.DONE);
 			}
 
 			@Override
 			public boolean isDone() {
-				return isDone;
+				return (state == State.DONE || state == State.CANCELED);
 			}
 
 			@Override
 			public T get() throws InterruptedException, ExecutionException {
-				if(true == isCancled)
+				if(state == State.CANCELED)
 				{
 					throw new ExecutionException("the task has been cancelled!", null);
 				}
-				sem.acquire();
+				taskIsDoneSem.acquire();
 				return result;
 			}
 
 			@Override
 			public T get(long timeout, TimeUnit unit)
 					throws InterruptedException, ExecutionException, TimeoutException {
-				if(true == isCancled)
+				if(state == State.CANCELED)
 				{
 					throw new ExecutionException("the task has been cancelled!", null);
 				}
-				if (false == sem.tryAcquire(timeout, unit))
+				if (false == taskIsDoneSem.tryAcquire(timeout, unit))
 				{
 					throw new TimeoutException("time out!");
 				}

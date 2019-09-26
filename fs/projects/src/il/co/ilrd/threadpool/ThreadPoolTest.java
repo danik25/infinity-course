@@ -58,6 +58,7 @@ class ThreadPoolTest {
 	void SetNumberOfThreadsTest()
 	{
 		System.out.println("\nset number of threads test:");
+		System.out.println("before the change of thread only 3 in printed, then 3 and 4");
 		boolean ans;
 		Run4 r4 = new Run4();
 		Run3 r3 = new Run3();
@@ -80,9 +81,10 @@ class ThreadPoolTest {
 	}
 	
 	
-	@Test
+	//@Test
 	void shutDownTest() {
 		System.out.println("\nshutDown test:");
+		System.out.println("printing only 4");
 		Run4 r4 = new Run4();
 		Run3 r3 = new Run3();		
 		
@@ -101,7 +103,7 @@ class ThreadPoolTest {
 		System.out.println("done");
 		assertTrue(ans);
 	}
-	//@Test
+	@Test
 	void cancelTest() {
 		System.out.println("\ncancel test:");
 		System.out.println("not suposed printing 'r4'");
@@ -156,7 +158,7 @@ class ThreadPoolTest {
 		myPool.resume();
 		
 		myPool.shutdown();
-		boolean ans = myPool.awaitTermination(15000, TimeUnit.MILLISECONDS);
+		boolean ans = myPool.awaitTermination(10000, TimeUnit.MILLISECONDS);
 		System.out.println("done");
 		assertFalse(ans);
 	}
