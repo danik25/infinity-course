@@ -39,20 +39,17 @@ public E dequeue() {
 }
 
 public E dequeue(long waitTime, TimeUnit timeUnit){
-	synchronized(pQueue)
-	{
-		try {
-			if (false == sem.tryAcquire(waitTime, timeUnit))
-			{
-				return null;
-			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+	try {
+		if (false == sem.tryAcquire(waitTime, timeUnit))
+		{
+			return null;
 		}
-		
-		synchronized (pQueue) {
-			return pQueue.poll();
-		}
+	} catch (InterruptedException e) {
+		e.printStackTrace();
+	}
+	
+	synchronized (pQueue) {
+		return pQueue.poll();
 	}
 }
 
@@ -64,7 +61,12 @@ public boolean remove(E element) {
 	}
 	
 	synchronized (pQueue) {
-		return pQueue.remove(element);
+		if (false == pQueue.remove(element))
+		{
+			sem.release();
+			return false;
+		}
+		return true;
 	}
 }
 }

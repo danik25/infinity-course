@@ -114,8 +114,11 @@ class ThreadPoolTest {
 		
 		myPool.submit(r5, Priority.HIGH);
 		Future<Void> f4 = myPool.submit(r4, Priority.LOW);
-		
 		f4.cancel(true);
+		
+		try{
+            Thread.sleep(5000);
+        }catch(InterruptedException e){}
 		
 		myPool.shutdown();
 		myPool.awaitTermination(15000, TimeUnit.MILLISECONDS);

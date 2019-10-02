@@ -20,8 +20,7 @@ public class ThreadPool implements Executor{
 	private boolean shutDownFlag = false; 
 	private boolean isPaused = false;
 	
-	
-	public ThreadPool(int threadNumber){
+	public ThreadPool(int threadNumber){פ
 		threadNum = threadNumber;
 		initialThreadNum = threadNumber;
 		
@@ -50,14 +49,9 @@ public class ThreadPool implements Executor{
 			while(threadShutDown == false)
 			{
 				newTask = waitableQueue.dequeue();
-				
-				//if(!newTask.futureAns.isCancled)
-				{
-					newTask.run();
-				}
+				newTask.run();
 			}
 			terminationSemaphore.release();
-			
 		}
 	}
 
@@ -132,7 +126,7 @@ public class ThreadPool implements Executor{
 		isPaused = true;
 		for(int i = 0; i < threadNum; ++i)
 		{
-			submitInnerTasks(pauseTask, Priority.HIGH.priority + 1); //the lowest items are addressed first
+			submitInnerTasks(pauseTask, Priority.HIGH.priority + 1); 
 		}
 	}
 
@@ -164,7 +158,7 @@ public class ThreadPool implements Executor{
 		
 		for(int i = 0; i < threadNum; ++i)
 		{
-			submitInnerTasks(p, Priority.LOW.priority - 1); //the highest items are addressed last
+			submitInnerTasks(p, Priority.LOW.priority - 1);
 		}	
 	}
 	
@@ -197,9 +191,9 @@ public class ThreadPool implements Executor{
 		@Override
 		public void run() {
 			try
-			{			
+			{
 				futureAns.result = task.call();
-				if(state ==  State.CANCELED)
+				if(state != State.CANCELED)
 				{
 					state = State.DONE;
 				}
@@ -224,11 +218,8 @@ public class ThreadPool implements Executor{
 			
 			@Override
 			public boolean cancel(boolean mayInterruptIfRunning){
-				if(state == State.WAITING)
-				{
-					task = () -> {return null;};
-					state = State.CANCELED;
-				}
+				task = () -> {return null;};
+				state = State.CANCELED;
 				
 				return true;
 			}
@@ -236,7 +227,7 @@ public class ThreadPool implements Executor{
 			@Override
 			public boolean isCancelled() {
 
-				return (state == State.CANCELED || state == State.DONE);
+				return (state == State.CANCELED);
 			}
 
 			@Override
