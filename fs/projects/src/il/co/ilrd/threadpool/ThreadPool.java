@@ -20,7 +20,7 @@ public class ThreadPool implements Executor{
 	private boolean shutDownFlag = false; 
 	private boolean isPaused = false;
 	
-	public ThreadPool(int threadNumber){פ
+	public ThreadPool(int threadNumber) {
 		threadNum = threadNumber;
 		initialThreadNum = threadNumber;
 		
@@ -131,7 +131,7 @@ public class ThreadPool implements Executor{
 	}
 
 	/**********************/
-	class PoisionPill implements Runnable
+	private class PoisionPill implements Runnable
 	{
 		@Override
 		public void run()
@@ -174,7 +174,7 @@ public class ThreadPool implements Executor{
 	private static class Task<T>  implements Comparable<Task<?>>, Runnable{
 		private Callable<T> task;
 		private int taskPriority;
-		State state = State.WAITING;
+		private State state = State.WAITING;
 		private TaskFuture futureAns = new TaskFuture();
 		
 		Task(Callable<T> task, int priority)
