@@ -6,36 +6,23 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
-import il.co.ilrd.logmonitor.CRUD;
-//import il.co.ilrd.logmonitor.CrudFile;
-
 public class Server {
 	public static void main(String [] args) throws Exception 
 	{
+		System.out.println("server");
 		CRUDNetworking <String, String> c = new CrudFile();
-		DatagramSocket ds = new DatagramSocket(1234); 
+		DatagramSocket serverSocket = new DatagramSocket(1234); 
 		byte[] receive = new byte[65535]; 
-		DatagramPacket DpReceive = null; 
-        while (true) 
+		boolean serverFlag = true;
+		System.out.println("starting");
+        while (serverFlag) 
         { 
-  
-            // Step 2 : create a DatgramPacket to receive the data. 
-            DpReceive = new DatagramPacket(receive, receive.length); 
-  
-            // Step 3 : revieve the data in byte buffer. 
-            ds.receive(DpReceive); 
-            c.create((receive).toString());
-  
-            // Exit the server if the client sends "bye" 
-            /*if (data(receive).toString().equals("bye")) 
-            { 
-                System.out.println("Client sent bye.....EXITING"); 
-                break; 
-            } */
-  
-            // Clear the buffer after every message. 
-            receive = new byte[65535]; 
+        	DatagramPacket DpReceive = new DatagramPacket(receive, receive.length); 
+        	serverSocket.receive(DpReceive);
+            c.create(new String(receive, 0, DpReceive.getLength()));
         }
+        serverSocket.close();
+        c.close();
 	}
 }
 
@@ -47,7 +34,7 @@ class CrudFile implements CRUDNetworking<String, String>
 	{
 		try
 		{
-			fileWriter = new BufferedWriter(new FileWriter("/home/student/Desktop/syslogNetworking_logger.txt"));
+			fileWriter = new BufferedWriter(new FileWriter("/home/xyz/Desktop/syslogNetworking_logger.txt"));
 		}catch(IOException e){System.out.println("creation if a file failed");}
 	}
 	
@@ -60,7 +47,9 @@ class CrudFile implements CRUDNetworking<String, String>
 	public String create(String item) {		
 		
 		try {
+			System.out.println("writing: " + item);
 			 fileWriter.write(item + "\n");
+			 fileWriter.flush();
 		} catch (IOException e) {
 			System.out.println("writing the information to a log failed");
 			System.out.println(e);
