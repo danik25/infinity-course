@@ -34,7 +34,7 @@ class CrudFile implements CRUDNetworking<String, String>
 	{
 		try
 		{
-			fileWriter = new BufferedWriter(new FileWriter("/home/xyz/Desktop/syslogNetworking_logger.txt"));
+			fileWriter = new BufferedWriter(new FileWriter("/home/student/Desktop/syslogNetworking_logger.txt"));
 		}catch(IOException e){System.out.println("creation if a file failed");}
 	}
 	
