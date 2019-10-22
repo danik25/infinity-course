@@ -55,13 +55,13 @@ class Crudsql implements CRUD<String, Integer>
 	public Integer create(String message) {		
 		System.out.println("inserting");
 		Integer ans = 0;
-		String insertion = "INSERT INTO " + tableName + " (message)" +  " VALUES('" + message + "');" ; 
+		message = message.replace('\"', '\'');
+		String insertion = "INSERT INTO " + tableName + " (`message`)" +  " VALUES(\"" + message + "\");" ; 
 		try {
 			ans = stmt.executeUpdate(insertion);
 		} catch (SQLException e) {
 			System.err.println("failed insertion");
 			System.err.println(e);
-			System.out.println(message.length());
 		}
 		
 		return ans;
