@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -40,18 +41,23 @@ public class CR extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	response.setContentType("text/html");
+    	/*response.setContentType("text/html");
 		String name = request.getParameter("name");
 	   
 	    PrintWriter out = response.getWriter();
-	    out.println("<h1>" + name + " just got registered" + "</h1>");
+	    out.println("<h1>" + name + " just got registered" + "</h1>");*/
+	    
+	    RequestDispatcher rd = request.getRequestDispatcher("registrationPage.html");
+	    rd.forward(request, response);
 	}
     
 
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//updateCompanyDatabase(request);
-		requestToGatewayServer();
+		System.out.println("request entered");
+		System.out.println(request);
+		updateCompanyDatabase(request);
+		//requestToGatewayServer();
 	}
 	
 	@SuppressWarnings("unchecked")

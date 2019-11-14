@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>GenericIotInfrastructure</title>
+</head>
+<style>
+#submit_button {
+	position: relative;
+	transition: .5s ease;
+	top: 20px;
+	left: 635px;
+}
+</style>
+
+<body style="background-color: powderblue;">
+	<h1 style="text-align: center;">company registration page</h1>
+	<p id="demo" style="text-align: center;">please enter company
+		information.</p>
+
+	<br>
+	<br>
+
+	<!--  
+<form style ="text-align:center;">
+  Company Name2:<br>
+  <input type="text" name="Company Name"><br>
+</form>
+ -->
+	<!--  
+ <form id="form" style ="text-align:center;">
+ Company Name:<br>
+ <input id="companyName" type="text" name="companyName" placeholder="insert your company name here..." />
+ </form>
+-->
+
+<form style="text-align: center;"
+	action="http://localhost:8080/tomcatServer/CR" method="post"
+	enctype="application/json">
+	<input id="companyName" type="text" name="companyName"
+		placeholder="insert your company name" /> Company Name:<br> 
+		 
+		<input
+		type="submit" value="Submit" onclick="submitform()"> 
+		<input
+		type="reset">
+		
+		<!-- <button> submitush </button>-->
+</form>
+
+
+
+	<!-- button -->
+	<!--  
+<button id="submit_button" style="color:blue; font-size:20px; 
+	      font-family:cursive; font-weight: bold"  
+                onclick="myFunction() ">
+Submit2
+</button>
+-->
+
+
+<script>
+	function myFunction() {
+		var xhr = new XMLHttpRequest();
+		xhr.open(form.method, form.action, true);
+		xhr.setRequestHeader('Content-Type',
+				'application/json; charset=UTF-8');
+		var j = {
+			"companyName" : "xxx",
+		};
+		xhr.send(JSON.stringify(j));
+	}
+</script>
+
+<script>
+	function submitform() {
+		preventDefault();
+		console.log("hi");
+		var xhr = new XMLHttpRequest();
+		xhr.open(form.method, form.action, true);
+		xhr.setRequestHeader('Content-Type',
+				'application/json; charset=UTF-8');
+		var j = {
+			"companyName" : "xxx"
+		};
+		xhr.send(JSON.stringify(j));
+	}
+</script>
+
+</body>
+</html>
+
