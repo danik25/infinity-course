@@ -10,10 +10,14 @@
 <link rel="stylesheet" href="homePageStyling.css">
 
 </head>
-<div>
+<!-- jquery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
 </head>
 
 <body>
+<div>
+<div class="center">
 
 
 <img style="border-radius:60%" class = "logo" src="/home/student/Desktop/daniHTML/iotRound.jpg" >
@@ -30,7 +34,7 @@
     <a href="javascript:void(0)" class="dropbtn">News</a>
     <div class="dropdown-content">
       <a href="#">us on the media</a>
-      <a href="ClientsTell.html">clients tell</a>
+      <a href="ClientsTell.html" target="_blank">clients tell</a>
     </div>
   </li>
   <li class="dropdown">
@@ -49,37 +53,60 @@
   </li>
 </ul>
 <br>
-</div>
+
+      
 <article id="pro">
-    <h3>already have an account?</h3>
-   <hr class="style2">
-    <p>get your product registered now!</p>
-    <hr>
-   <form action="/action_page.php">
-        Company Name:<br>
-       <input type="text" companyName="companyName" placeholder="insert company name here...">
-       <br>
-       Product Name:<br>
-       <input type="text" productName="productName" placeholder="insert product name here...">
-       <br><br>
-      <input class = "button" type="submit" value="Submit">
-      </form> 
+  <h3>already have an account?</h3>
+<hr class="style2">
+  <p>get your product registered now!</p>
+  <hr>
+<form >
+      Company Name:<br><br>
+    <input id = "companyName" type="text" placeholder="insert company name here...">
+    <br><br>
+    Product Name:<br><br>
+    <input id = "productName" type="text" placeholder="insert product name here...">
+    <br><br>
+    <input class = "button b" value="Submit" type="submit" onclick="submitProduct()">
+    </form> 
 </article>
 
 <article id="comp">
-    <h3>not a member yet?</h3>
-   <hr class="style2">
-    <p>register your company now!</p>
-    <hr>
-   <form action="/action_page.php">
-        Company Name:<br>
-       <input type="text" companyName="companyName" placeholder="insert company name here...">
-       <br>
-       <br><br><br>
-      <input class = "button" type="submit" value="Submit">
-      </form> 
+  <h3>not a member yet?</h3>
+<hr class="style2">
+  <p>register your company now!</p>
+  <hr>
+<form>
+      Company Name:<br><br>
+    <input id = "companyName" type="text" placeholder="insert company name here...">
+    <br>
+    <br><br><br>
+    <input class = "button b" value="Submit" type="submit" onclick="submitCompany()">
+    </form> 
 </article>
 
 </div>
 </body>
+
+<script>
+function submitCompany(){
+	var data = {};
+	
+	data.companyName = document.getElementById("companyName").value;
+	$.post("http://localhost:8080/tomcatServerProject/CR", JSON.stringify(data), function(result){
+	    $("span").html(result);
+	  });
+}
+function submitProduct(){
+	var data = {};
+	
+	data.companyName = document.getElementById("companyName").value;
+	data.productName = document.getElementById("productName").value;
+	$.post("http://localhost:8080/tomcatServerProject/PR", JSON.stringify(data), function(result){
+	    $("span").html(result);
+	  });
+}
+</script>
+</div>
 </html>
+

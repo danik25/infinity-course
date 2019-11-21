@@ -41,6 +41,7 @@ public class PR extends HttpServlet {
 	
 	@SuppressWarnings("unchecked")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("my name is dani");
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,String> myMap = new HashMap<String, String>();
 		myMap = mapper.readValue(request.getInputStream(),HashMap.class);

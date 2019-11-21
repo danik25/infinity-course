@@ -56,8 +56,8 @@ public class CR extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("request entered");
 		System.out.println(request);
-		updateCompanyDatabase(request);
-		//requestToGatewayServer();
+		/*updateCompanyDatabase(request);
+		requestToGatewayServer();*/
 	}
 	
 	@SuppressWarnings("unchecked")
