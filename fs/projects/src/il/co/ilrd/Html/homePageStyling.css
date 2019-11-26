@@ -1,17 +1,33 @@
 @charset "UTF-8";
+.side_bar
+{
+  width:70px;
+  background-color: #8c8b8b;
+}
+.side_bar_element
+{
+  padding:8px;
+  border:2px;
+  margin-bottom:5px;
+}
 
-
+.side_bar_element:hover{
+  background-color: white;
+}
 div::before {
+  size: cover;
   content: "";
   background: url("file:////home/student/Desktop/daniHTML/internet.jpg");
   opacity: 0.25;
   top: -5px;
+
   left: 0;
   bottom: 0;
   right: 0;
   position: absolute;
   z-index: -1;   
   background-repeat: no-repeat; 
+  
   
 }
 hr.style2 {
@@ -59,13 +75,11 @@ background-blend-mode: overlay;
 article{
   width: 250px;
   height:300px;
-  border: 15px solid CadetBlue;
+  border: 8px solid CadetBlue;
   padding: 50px;
-  margin: 20px;
-  border-radius: 12px;
+  margin: 10px;
+  border-radius: 8px;
   position: relative;
-  left:800px;
-   
   box-shadow: 3px 3px 5px grey;
 }
 
@@ -82,17 +96,16 @@ h1   {
 }
 
 body{
-   font-family:Arial;
+   font-family:Arial, Helvetica, sans-serif;
    font-weight:bold;
    height:100%;
-   width:100%;
-   backgroung-size:cover;
+   
+   margin:0 15% 0 15%;
 }
 
 /*************upper bar design*************/
 
 ul {
-  margin: 0;
   padding: 0;
   overflow: hidden;
   background-color: #333;
@@ -149,11 +162,10 @@ li.dropdown {
   padding-left: 20px;
   float:left;
 }
-.rightcolumn {   
-  width: 15%;
-  background-color: #f1f1f1;
-  padding-left: 20px;
-  float:right;
+.rightcolumn { 
+  float:right;  
+  margin-right: 5%;
+  margin-top: -3%;
 }
 
 .center{
@@ -165,6 +177,8 @@ li.dropdown {
   top:-10px;
 }
 
-
+.centeral{
+  margin: 0 auto 0 auto;
+}
 
 

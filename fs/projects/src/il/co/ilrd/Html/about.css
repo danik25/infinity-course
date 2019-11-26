@@ -1,0 +1,19 @@
+
+.center{
+    margin:0 30% 0 30%;
+    max-width : 700px;
+    width: 80%;
+}
+
+.start{
+    border-left: 5px solid gray;
+    padding: 5px;
+}
+
+body{
+    font-family: Coming Soon;
+}
+
+h1{
+    font:bold;
+}

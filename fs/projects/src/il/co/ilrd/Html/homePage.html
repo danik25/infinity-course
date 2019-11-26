@@ -13,12 +13,14 @@
 <!-- jquery-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
+<!-- font-->
+<link href="https://fonts.googleapis.com/css?family=Indie+Flower&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Julius+Sans+One&display=swap" rel="stylesheet">
 </head>
 
 <body>
-<div>
-<div class="center">
 
+<div>
 
 <img style="border-radius:60%" class = "logo" src="/home/student/Desktop/daniHTML/iotRound.jpg" >
 
@@ -29,7 +31,7 @@
 
 <br>
 <ul>
-  <li><a href="http://localhost:8080/tomcatServer/CR">Home</a></li>
+  <li><a href="http://localhost:8080/IOTTomcatServer/CR">Home</a></li>
   <li class="dropdown">
     <a href="javascript:void(0)" class="dropbtn">News</a>
     <div class="dropdown-content">
@@ -54,17 +56,25 @@
 </ul>
 <br>
 
-      
+<nav class="side_bar">
+  <a class = "side_bar_element" href=#option1> option1</a>
+  <br>
+  <a class = "side_bar_element" href=#option2> option2</a>
+  <br>
+  <a class = "side_bar_element" href=#option3> option3</a>
+</nav>
+
+<div class="rightcolumn">
 <article id="pro">
   <h3>already have an account?</h3>
 <hr class="style2">
   <p>get your product registered now!</p>
   <hr>
 <form >
-      Company Name:<br><br>
+    Company Name:<br>
     <input id = "companyName" type="text" placeholder="insert company name here...">
     <br><br>
-    Product Name:<br><br>
+    Product Name:<br>
     <input id = "productName" type="text" placeholder="insert product name here...">
     <br><br>
     <input class = "button b" value="Submit" type="submit" onclick="submitProduct()">
@@ -77,15 +87,15 @@
   <p>register your company now!</p>
   <hr>
 <form>
-      Company Name:<br><br>
+    Company Name:<br>
     <input id = "companyName" type="text" placeholder="insert company name here...">
     <br>
-    <br><br><br>
+    <br><br><br><br>
     <input class = "button b" value="Submit" type="submit" onclick="submitCompany()">
-    </form> 
-</article>
-
+</form> 
 </div>
+
+</div>    
 </body>
 
 <script>
@@ -93,7 +103,7 @@ function submitCompany(){
 	var data = {};
 	
 	data.companyName = document.getElementById("companyName").value;
-	$.post("http://localhost:8080/tomcatServerProject/CR", JSON.stringify(data), function(result){
+	$.post("http://localhost:8080/IOTTomcatServer/CR", JSON.stringify(data), function(result){
 	    $("span").html(result);
 	  });
 }
@@ -102,11 +112,11 @@ function submitProduct(){
 	
 	data.companyName = document.getElementById("companyName").value;
 	data.productName = document.getElementById("productName").value;
-	$.post("http://localhost:8080/tomcatServerProject/PR", JSON.stringify(data), function(result){
+	$.post("http://localhost:8080/IOTTomcatServer/PR", JSON.stringify(data), function(result){
 	    $("span").html(result);
 	  });
 }
 </script>
-</div>
+
 </html>
 
