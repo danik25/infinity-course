@@ -46,9 +46,9 @@
     </div>
   </li>
   <li class="dropdown">
-    <a href="javascript:void(0)" class="dropbtn">about</a>
+    <a href="javascript:void(0)" class="dropbtn">about us</a>
     <div class="dropdown-content">
-      <a href="#">Our Story</a>
+      <a href="about.html" target="_blank">about</a>
       <a href="#">careers</a>
       <a href="#">Our team</a>
     </div>
@@ -70,14 +70,14 @@
 <hr class="style2">
   <p>get your product registered now!</p>
   <hr>
-<form >
-    Company Name:<br>
-    <input id = "companyName" type="text" placeholder="insert company name here...">
-    <br><br>
-    Product Name:<br>
-    <input id = "productName" type="text" placeholder="insert product name here...">
-    <br><br>
-    <input class = "button b" value="Submit" type="submit" onclick="submitProduct()">
+    <form >
+      Company Name:<br>
+      <input id = "companyNamePR" type="text" placeholder="insert company name here...">
+      <br><br>
+      Product Name:<br>
+      <input id = "productNamePR" type="text" placeholder="insert product name here...">
+      <br><br>
+      <input class = "button b" value="Submit" type="submit" onclick="submitProduct()">
     </form> 
 </article>
 
@@ -85,38 +85,19 @@
   <h3>not a member yet?</h3>
 <hr class="style2">
   <p>register your company now!</p>
-  <hr>
-<form>
-    Company Name:<br>
-    <input id = "companyName" type="text" placeholder="insert company name here...">
-    <br>
-    <br><br><br><br>
-    <input class = "button b" value="Submit" type="submit" onclick="submitCompany()">
-</form> 
+    <form>
+        Company Name:<br>
+        <input id = "companyNameCR" type="text" placeholder="insert company name here...">
+        <br>
+        <br><br><br><br>
+        <input class = "button b" value="Submit" type="submit" onclick="submitCompany()">
+    </form> 
 </div>
 
 </div>    
 </body>
 
-<script>
-function submitCompany(){
-	var data = {};
-	
-	data.companyName = document.getElementById("companyName").value;
-	$.post("http://localhost:8080/IOTTomcatServer/CR", JSON.stringify(data), function(result){
-	    $("span").html(result);
-	  });
-}
-function submitProduct(){
-	var data = {};
-	
-	data.companyName = document.getElementById("companyName").value;
-	data.productName = document.getElementById("productName").value;
-	$.post("http://localhost:8080/IOTTomcatServer/PR", JSON.stringify(data), function(result){
-	    $("span").html(result);
-	  });
-}
-</script>
+<script src="HomePageScript.js"></script>
 
 </html>
 

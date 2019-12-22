@@ -44,16 +44,12 @@ public class CR extends HttpServlet {
 	   
 	    PrintWriter out = response.getWriter();
 	    out.println("<h1>" + name + " just got registered" + "</h1>");*/
-	    
-	    RequestDispatcher rd = request.getRequestDispatcher("registrationPage.html");
-	    rd.forward(request, response);
+	    System.out.println("here");
+	    //RequestDispatcher rd = request.getRequestDispatcher("registrationPage.html");
+	    //rd.forward(request, response);
 	}
-    
-
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("request entered");
-		System.out.println("again and again!");
 		updateCompanyDatabase(request); 
 		/* requestToGatewayServer(); */
 		 

@@ -6,26 +6,28 @@
     <link href="https://fonts.googleapis.com/css?family=Indie+Flower&display=swap" rel="stylesheet">
     <title>Color Game</title>
 </head>
-<h1>color guessing game</h1>
+
 <body>
+    <div class="flex-container">
+        <div id = "upper">
+            <h1>color guessing game</h1>
+            <h2>guss the color of: <span id = "rgb"> RGB </span><h1>
+        </div>
+        <div id = "stripe">
+            <button id = "newGame"> </button>
+            <button class = selected id = "hardBtn"> HARD </button>
+            <button id = "easyBtn"> EASY </button>
+        </div>
+    </div>
+    
     <div class = "square_container">
-        <div class = square>
-        </div>
-        <div class = square>
-
-        </div>
-        <div class = square>
-
-        </div>
-        <div class = square>
-        </div>
-        <div class = square>
-
-        </div>
-        <div class = square>
+        <div class = square></div>       
+        <div class = square></div>        
+        <div class = square></div>       
+        <div class = square></div>
+        <div class = square></div>
+        <div class = square></div>
     </div>
-    </div>
-
     <script src="colorGame.js"></script>
 </body>
 </html>
