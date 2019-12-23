@@ -59,7 +59,7 @@ public class SqlCrudTomcat
 	}
 
 	public String read(String tableName, String columnName, String byKey, String key) {
-		String askedMessage = "SELECT" + columnName + " FROM " + tableName + " WHERE " + byKey + " = " + key + ";";
+		String askedMessage = "SELECT " + columnName + " FROM " + tableName + " WHERE " + byKey + " = \"" +  key + "\";";
 		try {
 			ResultSet answer = stmt.executeQuery(askedMessage);
 			if (answer.next()) 

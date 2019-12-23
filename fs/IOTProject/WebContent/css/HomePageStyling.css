@@ -1,0 +1,183 @@
+@charset "UTF-8";
+.side_bar
+{
+  width:70px;
+  background-color: #8c8b8b;
+}
+.side_bar_element
+{
+  padding:8px;
+  border:2px;
+  margin-bottom:5px;
+}
+
+.side_bar_element:hover{
+  background-color: white;
+}
+div::before {
+  size: cover;
+  content: "";
+  background: url("file:////home/student/Desktop/daniHTML/internet.jpg");
+  opacity: 0.25;
+  top: -5px;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;   
+  background-repeat: no-repeat; 
+  
+  
+}
+hr.style2 {
+	border-top: 3px double #8c8b8b;
+	border-radius: 2px;
+	border: 2px solid black;
+}
+
+#comp{
+background-color: #cccccc;
+background-image: url("file:////home/student/Desktop/daniHTML/company.jpg");
+background-repeat: no-repeat;
+background-size: cover;
+background-blend-mode: overlay;
+
+}
+#pro {
+background-color: #cccccc;
+background-image:  url("file:////home/student/Desktop/daniHTML/chip.jpg");
+background-repeat: no-repeat;
+background-size: cover;
+background-blend-mode: overlay;
+
+}
+
+.button {
+  background-color: #6495ED;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 12px;
+  font-family: monospace;
+}
+
+.b:hover{
+  background-color: rgba(14, 121, 121, 0.932);
+  transform: scale(1.5, 1.5);
+}
+article{
+  width: 250px;
+  height:300px;
+  border: 8px solid CadetBlue;
+  padding: 50px;
+  margin: 10px;
+  border-radius: 8px;
+  position: relative;
+  box-shadow: 3px 3px 5px grey;
+}
+
+h1   {
+   display: inline; 
+   font-size:300%;
+}
+.logo{
+   width:60px;
+   height:60px; 
+   display: inline; 
+   position: relative;
+   top: 12px; 
+}
+
+body{
+   font-family:Arial, Helvetica, sans-serif;
+   font-weight:bold;
+   height:100%;
+   
+   margin:0 15% 0 15%;
+}
+
+/*************upper bar design*************/
+
+ul {
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+}
+
+li a, .dropbtn {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover, .dropdown:hover{
+  background-color: CadetBlue ;
+}
+
+li.dropdown {
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1;}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/********************************************/
+
+.leftcolumn {   
+  width: 15%;
+  background-color: #f1f1f1;
+  padding-left: 20px;
+  float:left;
+}
+.rightcolumn { 
+  float:right;  
+  margin-right: 5%;
+  margin-top: -3%;
+}
+
+.center{
+  width: 70%;
+  background-color: #f1f1f1;
+  padding-left: 20px;
+  position: relative;
+  left:270px;
+  top:-10px;
+}
+
+.centeral{
+  margin: 0 auto 0 auto;
+}
+
+
