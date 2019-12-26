@@ -36,8 +36,7 @@ public class HOME extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
-		RequestDispatcher view = request.getRequestDispatcher("/WebContent/html/HomePage.html");
-		 
+		RequestDispatcher view = request.getRequestDispatcher("/html/HomePage.html");
 		view.forward(request, response);
 	}
 
@@ -58,18 +57,10 @@ public class HOME extends HttpServlet {
 		if(answer != null && answer.equals(myMap.get("companyName")))
 		{
 			System.out.println("correct!");
-			response.setContentType("text/html");
-			response.setCharacterEncoding("UTF-8");
-			
-			// create HTML response
-			PrintWriter writer = response.getWriter();
-			writer.append("CompanyPage.html");
 		}
 		else
 		{
 			System.out.println("wrong");
-		}
-		
+		}	
 	}
-
 }

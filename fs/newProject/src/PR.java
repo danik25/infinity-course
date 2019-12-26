@@ -1,19 +1,20 @@
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@WebServlet("/HOME")
-public class HOME extends HttpServlet {
+
+@WebServlet("/PR")
+public class PR extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private SqlCrudTomcat sqlCon;   
 
@@ -23,53 +24,30 @@ public class HOME extends HttpServlet {
 	String databaseName = "managmentDatabase";
 	String tableName = "products";
 	
-	
-	
-    public HOME() {
+    public PR() {
         super();
 		sqlCon = new SqlCrudTomcat(url, user, pass, databaseName);
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
-		RequestDispatcher view = request.getRequestDispatcher("/WebContent/html/HomePage.html");
-		 
-		view.forward(request, response);
+		response.setContentType("text/html");
+		String name = request.getParameter("name");
+	    
+	    PrintWriter out = response.getWriter();
+	    out.println("<h1>" + name + " just got registered" + "</h1>");
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+	
+	@SuppressWarnings("unchecked")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String tableName = "companies";
-		String columnName = "companyName";
-		String byKey = "password";
-		
+		System.out.println("a product just got registered!");
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,String> myMap = new HashMap<String, String>();
 		myMap = mapper.readValue(request.getInputStream(),HashMap.class);
+		String query = "INSERT INTO " + tableName + " (`companyName`, `productName`)" +  
+				" VALUES(\"" + myMap.get("companyName") + "\" , \"" + myMap.get("productName") + "\");" ; 
 		
-		String answer = sqlCon.read(tableName, columnName, byKey, myMap.get("password"));
-		
-		if(answer != null && answer.equals(myMap.get("companyName")))
-		{
-			System.out.println("correct!");
-			response.setContentType("text/html");
-			response.setCharacterEncoding("UTF-8");
-			
-			// create HTML response
-			PrintWriter writer = response.getWriter();
-			writer.append("CompanyPage.html");
-		}
-		else
-		{
-			System.out.println("wrong");
-		}
-		
+		sqlCon.create(query);
 	}
-
 }

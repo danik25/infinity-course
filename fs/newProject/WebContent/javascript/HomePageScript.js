@@ -2,7 +2,7 @@ function submitCompany(){
 	var data = {};
 	
 	data.companyName = document.getElementById("companyNameCR").value;
-	$.post("http://localhost:8080/IOTTomcatServer/CR", JSON.stringify(data), function(result){
+	$.post("http://localhost:8080/newProject/CR", JSON.stringify(data), function(result){
 	    $("span").html(result);
 	  });
 }
@@ -11,7 +11,7 @@ function submitProduct(){
 	
 	data.companyName = document.getElementById("companyNamePR").value;
 	data.productName = document.getElementById("productNamePR").value;
-	$.post("http://localhost:8080/IOTTomcatServer/PR", JSON.stringify(data), function(result){
+	$.post("http://localhost:8080/newProject/PR", JSON.stringify(data), function(result){
 	    $("span").html(result);
 	  });
 }
@@ -22,8 +22,8 @@ function submitLogin(){
     data.password = document.getElementById("passwordLOGIN").value;
 	data.companyName = document.getElementById("companyNameLOGIN").value;
 	
-	var answer = $.post("http://localhost:8080/IOTTomcatServer/HOME", JSON.stringify(data), function(result){
-        console.log("la la la");
+	var answer = $.post("http://localhost:8080/newProject/HOME", JSON.stringify(data), function(result){
+		alert( "success" );
       });
       
     console.log(answer);

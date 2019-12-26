@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>GenericIotInfrastructure</title>
+<link href="./css/HomePageStyling.css" rel="stylesheet" type="text/css"/>
+
+</head>
+<!-- jquery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<!-- font-->
+<link href="https://fonts.googleapis.com/css?family=Indie+Flower&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Julius+Sans+One&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <div>
+
+  <img style="border-radius:60%" class = "logo" src="./images/iotRound.jpeg" >
+  
+
+  <h1 id = "head">Dani's Generic Iot Infrastructure</h1>
+  <h1> second version </h1>
+
+  <br>
+  <br>
+  <br>
+
+  <ul>
+    <li><a href="http://localhost:8080/newProject/CR">Home</a></li>
+    <li class="dropdown">
+      <a href="javascript:void(0)" class="dropbtn">News</a>
+      <div class="dropdown-content">
+        <a href="#">us on the media</a>
+        <a href="ClientsTell.html" target="_blank">clients tell</a>
+      </div>
+    </li>
+
+    <li class="dropdown">
+      <a href="javascript:void(0)" class="dropbtn">Contact</a>
+      <div class="dropdown-content">
+        <a href="#">contact us</a>
+      </div>
+    </li>
+
+    <li class="dropdown">
+      <a href="javascript:void(0)" class="dropbtn">about us</a>
+      <div class="dropdown-content">
+        <a href="about.html" target="_blank">about</a>
+        <a href="#">careers</a>
+        <a href="#">Our team</a>
+      </div>
+    </li>
+  </ul>
+
+  <br>
+<!--
+  <article id="pro">
+    <h3>already have an account?</h3>
+  <hr class="style2">
+    <p>get your product registered now!</p>
+    <hr>
+      <form >
+        Company Name:<br>
+        <input id = "companyNamePR" type="text" placeholder="insert company name here...">
+        <br><br>
+        Product Name:<br>
+        <input id = "productNamePR" type="text" placeholder="insert product name here...">
+        <br><br>
+        <input class = "button b" value="Submit" type="submit" onclick="submitProduct()">
+      </form> 
+  </article>
+
+  <article id="comp">
+    <h3>not a member yet?</h3>
+    <hr class="style2">
+    <p>register your company now!</p>
+      <form>
+          Company Name:<br>
+          <input id = "companyNameCR" type="text" placeholder="insert company name here...">
+          <br>
+          <br><br><br><br>
+          <input class = "button b" value="Submit" type="submit" onclick="submitCompany()">
+      </form> 
+  </article>
+
+ -->
+
+ <article id="login">
+  <h3>already have an account?</h3>
+<hr class="style2">
+  <p> log in</p>
+  <hr>
+    <form >
+      Company Name:<br>
+      <input id = "companyNameLOGIN" type="text" placeholder="insert company name here...">
+      <br><br>
+      Password:<br>
+      <input id = "passwordLOGIN" type="text" placeholder="insert password here...">
+      <br><br>
+      <input class = "button b" value="Submit" type="submit" onclick="submitLogin()">
+    </form> 
+</article>
+
+  </div>    
+</body>
+
+<script src="./javascript/HomePageScript.js"></script>
+
+</html>
+
