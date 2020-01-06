@@ -32,7 +32,35 @@ class LinkedList {
             last = newNode;
         }
     }
+    static int sumLists(LinkedList first, LinkedList second)
+    {
+        int answer = 0;
+        int leftover = 0;
+        int mult = 1;
+        int currentSum = 0;
 
+
+        Node fNode = first.head;
+        Node sNode = second.head;
+
+        while(fNode != null && sNode != null)
+        {
+            currentSum = fNode.data + sNode.data + leftover;
+            leftover = 0;
+            if(currentSum > 9)
+            {
+                currentSum %= 10;
+                leftover = 1;
+            }
+            answer = answer + currentSum * mult;
+            mult *= 10;
+
+            fNode = fNode.next;
+            sNode = sNode.next;
+        }
+
+        return answer;
+    }
     int sumList() {
         int answer = 0;
         int mult = 1;
