@@ -51,7 +51,7 @@ const userSchema = new mongoose.Schema({
 
 userSchema.statics.findByCredentials = async (email, password) => {
     const user = await User.findOne({ email })
-    
+
     if (!user) {
         throw new Error('Unable to login')
     }
@@ -71,6 +71,15 @@ userSchema.methods.generateAuthToken = async function(){
     await this.save()
     
     return token
+}
+
+userSchema.methods.toJSON = function(){
+    const userObject = this.toObject()
+
+    delete userObject.password
+    delete userObject.tokens
+
+    return userObject;
 }
 
 userSchema.pre('save', async function (next) {
