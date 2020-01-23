@@ -1,0 +1,3 @@
+[submodule "fs/angular/experiment2/angular-seed"]
+	path = fs/angular/experiment2/angular-seed
+	url = https://github.com/angular/angular-seed.git
