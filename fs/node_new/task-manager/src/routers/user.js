@@ -4,7 +4,6 @@ const User = require('../models/user')
 const auth = require('../middleware/auth')
 const multer = require('multer')
 const sharp = require('sharp')
-
 /**************posts**************/
 
 router.post('/users', async (req, res) => {

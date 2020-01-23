@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+		<script src="index.js"></script>
+	</head>
+
+	<body ng-app="myapp">
+		<div ng-controller="myController" >
+			
+			<form name = "formName" novalidate>
+				<select  
+					ng-model="selectedName" 
+					ng-options="c for c in currencies" 
+					required>
+				</select>
+
+				<input type = "number" name = "name" 
+					required
+					ng-model="amount">
+					<br>				
+					
+				<button ng-click = "convertAmount(selectedName, amount)"
+					ng-disabled="formName.$invalid">
+					calculate
+				</button>
+			</form>
+			{{result}}
+		</div>
+	
+	</body>
+</html>
