@@ -1,6 +1,4 @@
-[submodule "fs/angular/experiment2/angular-seed"]
-	path = fs/angular/experiment2/angular-seed
-	url = https://github.com/angular/angular-seed.git
+
 [submodule "fs/angular/exp/angular-phonecat"]
 	path = fs/angular/exp/angular-phonecat
 	url = https://github.com/angular/angular-phonecat.git
