@@ -1,0 +1,15 @@
+{
+  "name": "Angular-TypeScript",
+  "version": "1.0.0",
+  "description": "Starter files and support materials for the Pluralsight course: \"Angular with TypeScript\"",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/angular": "^1.6.57"
+  }
+}
